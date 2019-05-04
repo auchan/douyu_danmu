@@ -1,0 +1,819 @@
+li {
+    outline: none;
+    list-style: none
+}
+
+.FansMedal {
+    display: inline-block;
+    vertical-align: middle;
+    width: 60px;
+    height: 19px;
+    margin-top: -3px;
+    overflow: hidden
+}
+
+.FansMedal.level-0 {
+    background-position: 0 -19px
+}
+
+.FansMedal.level-0,.FansMedal.level-1 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.fansLevel_979c02d.png)
+}
+
+.FansMedal.level-1 {
+    background-position: -120px -57px
+}
+
+.FansMedal.level-2 {
+    background-position: 0 -38px
+}
+
+.FansMedal.level-2,.FansMedal.level-3 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.fansLevel_979c02d.png)
+}
+
+.FansMedal.level-3 {
+    background-position: -60px 0
+}
+
+.FansMedal.level-4 {
+    background-position: -60px -19px
+}
+
+.FansMedal.level-4,.FansMedal.level-5 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.fansLevel_979c02d.png)
+}
+
+.FansMedal.level-5 {
+    background-position: -60px -38px
+}
+
+.FansMedal.level-6 {
+    background-position: 0 -57px
+}
+
+.FansMedal.level-6,.FansMedal.level-7 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.fansLevel_979c02d.png)
+}
+
+.FansMedal.level-7 {
+    background-position: -60px -57px
+}
+
+.FansMedal.level-8 {
+    background-position: 0 -76px
+}
+
+.FansMedal.level-8,.FansMedal.level-9 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.fansLevel_979c02d.png)
+}
+
+.FansMedal.level-9 {
+    background-position: -60px -76px
+}
+
+.FansMedal.level-10 {
+    background-position: 0 -95px
+}
+
+.FansMedal.level-10,.FansMedal.level-11 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.fansLevel_979c02d.png)
+}
+
+.FansMedal.level-11 {
+    background-position: -60px -95px
+}
+
+.FansMedal.level-12 {
+    background-position: -120px 0
+}
+
+.FansMedal.level-12,.FansMedal.level-13 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.fansLevel_979c02d.png)
+}
+
+.FansMedal.level-13 {
+    background-position: -120px -19px
+}
+
+.FansMedal.level-14 {
+    background-position: -120px -38px
+}
+
+.FansMedal.level-14,.FansMedal.level-15 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.fansLevel_979c02d.png)
+}
+
+.FansMedal.level-15 {
+    background-position: 0 0
+}
+
+.FansMedal.level-16 {
+    background-position: -120px -76px
+}
+
+.FansMedal.level-16,.FansMedal.level-17 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.fansLevel_979c02d.png)
+}
+
+.FansMedal.level-17 {
+    background-position: -120px -95px
+}
+
+.FansMedal.level-18 {
+    background-position: 0 -114px
+}
+
+.FansMedal.level-18,.FansMedal.level-19 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.fansLevel_979c02d.png)
+}
+
+.FansMedal.level-19 {
+    background-position: -60px -114px
+}
+
+.FansMedal.level-20 {
+    background-position: -120px -114px
+}
+
+.FansMedal.level-20,.FansMedal.level-21 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.fansLevel_979c02d.png)
+}
+
+.FansMedal.level-21 {
+    background-position: 0 -133px
+}
+
+.FansMedal.level-22 {
+    background-position: -60px -133px
+}
+
+.FansMedal.level-22,.FansMedal.level-23 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.fansLevel_979c02d.png)
+}
+
+.FansMedal.level-23 {
+    background-position: -120px -133px
+}
+
+.FansMedal.level-24 {
+    background-position: 0 -152px
+}
+
+.FansMedal.level-24,.FansMedal.level-25 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.fansLevel_979c02d.png)
+}
+
+.FansMedal.level-25 {
+    background-position: -60px -152px
+}
+
+.FansMedal.level-26 {
+    background-position: -120px -152px
+}
+
+.FansMedal.level-26,.FansMedal.level-27 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.fansLevel_979c02d.png)
+}
+
+.FansMedal.level-27 {
+    background-position: -180px 0
+}
+
+.FansMedal.level-28 {
+    background-position: -180px -19px
+}
+
+.FansMedal.level-28,.FansMedal.level-29 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.fansLevel_979c02d.png)
+}
+
+.FansMedal.level-29 {
+    background-position: -180px -38px
+}
+
+.FansMedal.level-30 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.fansLevel_979c02d.png);
+    background-position: -180px -57px
+}
+
+.FansMedal-name {
+    display: block;
+    margin-left: 20px;
+    margin-top: 3px;
+    line-height: 16px;
+    font-size: 12px;
+    color: #fff;
+    text-align: center
+}
+
+.UserLevel {
+    display: inline-block;
+    width: 40px;
+    height: 16px;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    margin-right: 5px
+}
+
+.UserLevel--1 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: 0 -16px
+}
+
+.UserLevel--2 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -80px -128px
+}
+
+.UserLevel--3 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -40px 0
+}
+
+.UserLevel--4 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -40px -16px
+}
+
+.UserLevel--5 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: 0 -32px
+}
+
+.UserLevel--6 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -40px -32px
+}
+
+.UserLevel--7 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: 0 -48px
+}
+
+.UserLevel--8 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -40px -48px
+}
+
+.UserLevel--9 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: 0 -64px
+}
+
+.UserLevel--10 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -40px -64px
+}
+
+.UserLevel--11 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -80px 0
+}
+
+.UserLevel--12 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -80px -16px
+}
+
+.UserLevel--13 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -80px -32px
+}
+
+.UserLevel--14 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -80px -48px
+}
+
+.UserLevel--15 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -80px -64px
+}
+
+.UserLevel--16 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: 0 -80px
+}
+
+.UserLevel--17 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -40px -80px
+}
+
+.UserLevel--18 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -80px -80px
+}
+
+.UserLevel--19 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: 0 -96px
+}
+
+.UserLevel--20 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -40px -96px
+}
+
+.UserLevel--21 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -80px -96px
+}
+
+.UserLevel--22 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -120px 0
+}
+
+.UserLevel--23 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -120px -16px
+}
+
+.UserLevel--24 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -120px -32px
+}
+
+.UserLevel--25 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -120px -48px
+}
+
+.UserLevel--26 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -120px -64px
+}
+
+.UserLevel--27 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -120px -80px
+}
+
+.UserLevel--28 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -120px -96px
+}
+
+.UserLevel--29 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: 0 -112px
+}
+
+.UserLevel--30 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -40px -112px
+}
+
+.UserLevel--31 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -80px -112px
+}
+
+.UserLevel--32 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -120px -112px
+}
+
+.UserLevel--33 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: 0 -128px
+}
+
+.UserLevel--34 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -40px -128px
+}
+
+.UserLevel--35 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: 0 0
+}
+
+.UserLevel--36 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -120px -128px
+}
+
+.UserLevel--37 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: 0 -144px
+}
+
+.UserLevel--38 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -40px -144px
+}
+
+.UserLevel--39 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -80px -144px
+}
+
+.UserLevel--40 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -120px -144px
+}
+
+.UserLevel--41 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -160px 0
+}
+
+.UserLevel--42 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -160px -16px
+}
+
+.UserLevel--43 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -160px -32px
+}
+
+.UserLevel--44 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -160px -48px
+}
+
+.UserLevel--45 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -160px -64px
+}
+
+.UserLevel--46 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -160px -80px
+}
+
+.UserLevel--47 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -160px -96px
+}
+
+.UserLevel--48 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -160px -112px
+}
+
+.UserLevel--49 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -160px -128px
+}
+
+.UserLevel--50 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -160px -144px
+}
+
+.UserLevel--51 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: 0 -160px
+}
+
+.UserLevel--52 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -40px -160px
+}
+
+.UserLevel--53 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -80px -160px
+}
+
+.UserLevel--54 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -120px -160px
+}
+
+.UserLevel--55 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -160px -160px
+}
+
+.UserLevel--56 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: 0 -176px
+}
+
+.UserLevel--57 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -40px -176px
+}
+
+.UserLevel--58 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -80px -176px
+}
+
+.UserLevel--59 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -120px -176px
+}
+
+.UserLevel--60 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -160px -176px
+}
+
+.UserLevel--61 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -200px 0
+}
+
+.UserLevel--62 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -200px -16px
+}
+
+.UserLevel--63 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -200px -32px
+}
+
+.UserLevel--64 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -200px -48px
+}
+
+.UserLevel--65 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -200px -64px
+}
+
+.UserLevel--66 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -200px -80px
+}
+
+.UserLevel--67 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -200px -96px
+}
+
+.UserLevel--68 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -200px -112px
+}
+
+.UserLevel--69 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/sprite.userLevel_82d711d.png);
+    background-position: -200px -128px
+}
+
+.UserLevel--70 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV70_24f496b.gif)
+}
+
+.UserLevel--71 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV71_fdc73ff.gif)
+}
+
+.UserLevel--72 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV72_cd7fdb1.gif)
+}
+
+.UserLevel--73 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV73_f1f8a01.gif)
+}
+
+.UserLevel--74 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV74_14b441f.gif)
+}
+
+.UserLevel--75 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV75_a999981.gif)
+}
+
+.UserLevel--76 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV76_79eafa6.gif)
+}
+
+.UserLevel--77 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV77_6ce383e.gif)
+}
+
+.UserLevel--78 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV78_feafaeb.gif)
+}
+
+.UserLevel--79 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV79_329bd89.gif)
+}
+
+.UserLevel--80 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV80_1701792.gif)
+}
+
+.UserLevel--81 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV81_1d2f206.gif)
+}
+
+.UserLevel--82 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV82_2753646.gif)
+}
+
+.UserLevel--83 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV83_8b73b1e.gif)
+}
+
+.UserLevel--84 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV84_f2ea2f0.gif)
+}
+
+.UserLevel--85 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV85_09dab38.gif)
+}
+
+.UserLevel--86 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV86_e70619b.gif)
+}
+
+.UserLevel--87 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV87_b2ff38b.gif)
+}
+
+.UserLevel--88 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV88_6544af4.gif)
+}
+
+.UserLevel--89 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV89_62820cd.gif)
+}
+
+.UserLevel--90 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV90_d0a0371.gif)
+}
+
+.UserLevel--91 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV91_9889530.gif)
+}
+
+.UserLevel--92 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV92_453ebb5.gif)
+}
+
+.UserLevel--93 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV93_9797b67.gif)
+}
+
+.UserLevel--94 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV94_4dddd05.gif)
+}
+
+.UserLevel--95 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV95_5cbd375.gif)
+}
+
+.UserLevel--96 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV96_398beb6.gif)
+}
+
+.UserLevel--97 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV97_40aed1c.gif)
+}
+
+.UserLevel--98 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV98_8a2b7df.gif)
+}
+
+.UserLevel--99 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV99_5d2aaa8.gif)
+}
+
+.UserLevel--100 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV100_4da4278.gif)
+}
+
+.UserLevel--101 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV101_5ab9597.gif)
+}
+
+.UserLevel--102 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV102_676d617.gif)
+}
+
+.UserLevel--103 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV103_4e8144b.gif)
+}
+
+.UserLevel--104 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV104_38e8bca.gif)
+}
+
+.UserLevel--105 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV105_5c4338d.gif)
+}
+
+.UserLevel--106 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV106_3b314c5.gif)
+}
+
+.UserLevel--107 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV107_b39d13d.gif)
+}
+
+.UserLevel--108 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV108_fa5590d.gif)
+}
+
+.UserLevel--109 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV109_f16d721.gif)
+}
+
+.UserLevel--110 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV110_bf73e51.gif)
+}
+
+.UserLevel--111 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV111_a37a582.gif)
+}
+
+.UserLevel--112 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV112_8788cb1.gif)
+}
+
+.UserLevel--113 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV113_be5fbff.gif)
+}
+
+.UserLevel--114 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV114_f64ff7b.gif)
+}
+
+.UserLevel--115 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV115_e3c70a5.gif)
+}
+
+.UserLevel--116 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV116_cc340ac.gif)
+}
+
+.UserLevel--117 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV117_6861740.gif)
+}
+
+.UserLevel--118 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV118_9f3fe00.gif)
+}
+
+.UserLevel--119 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV119_cedf94b.gif)
+}
+
+.UserLevel--120 {
+    background-image: url(https://sta-op.douyucdn.cn/front-publish/live-master/assets/images/LV120_2f6eb37.gif)
+}
+
+.Barrage-content {
+    color: #333;
+    word-break: break-all;
+    word-wrap: break-word;
+    vertical-align: middle
+}
+
+.Barrage-content--color0 {
+    color: red!important
+}
+
+.Barrage-content--color1 {
+    color: #1e87f0!important
+}
+
+.Barrage-content--color2 {
+    color: #7ac84b!important
+}
+
+.Barrage-content--color3 {
+    color: #ff7f00!important
+}
+
+.Barrage-content--color4 {
+    color: #9b39f4!important
+}
+
+.Barrage-content--color5 {
+    color: #ff69b4!important
+}
+
+.Barrage-nickName {
+    margin-right: 1px;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle
+}
+
+.Barrage-nickName--blue,.Barrage-nickName--blue:hover {
+    color: #2b94ff;
+    cursor: pointer
+}
+
+.Barrage-listItem {
+    position: relative;
+    line-height: 21px;
+    word-break: break-all;
+    word-wrap: break-word;
+    margin-bottom: 8px;
+    margin-top: 8px;
+    font-size: 13px
+}
