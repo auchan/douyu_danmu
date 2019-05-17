@@ -161,7 +161,7 @@ def start(client, roomid, in_q):
                     traceback.print_exc()
                     continue
         except BlockingIOError:
-            time.sleep(1)
+            time.sleep(0.1)
             if time.time() - recvdata_time > 40:
                 isExit = True
             if isExit:
@@ -178,7 +178,6 @@ def sleep(duration):
     while not isExit and count < duration:
         time.sleep(1)
         count += 1
-
 
 def keeplive(client):
     '''
@@ -216,10 +215,10 @@ async def async_producer():
 
 async def producer_handler(websocket, path):
     global history_barrages
-    print("connected", websocket, path)
+    #print("connected", websocket, path)
     # Register.
     connected.add(websocket)
-    print("connected count: ", len(connected))
+    #print("connected count: ", len(connected))
     #send history
     for message in history_barrages:
         await websocket.send(message)
@@ -235,7 +234,7 @@ async def producer_handler(websocket, path):
 
                         await asyncio.wait([ws.send(message) for ws in connected if not ws.closed])
                         if websocket.closed:
-                            print("closed", websocket, path)
+                            #print("closed", websocket, path)
                             connected.remove(websocket)
                     else:
                         await asyncio.sleep(0.1)
@@ -252,7 +251,7 @@ async def producer_handler(websocket, path):
                 except websockets.exceptions.ConnectionClosed:
                     break
     finally:
-        print("closed", websocket, path)
+        #print("closed", websocket, path)
         # Unregister.
         if websocket in connected:
             connected.remove(websocket)
@@ -261,6 +260,8 @@ async def wakeup():
     while True:
         await asyncio.sleep(1)
         if isExit:
+            time_str = datetime.now(tz).strftime('%Y-%m-%d %H:%M:%S')
+            print("exit at " + time_str)
             sys.exit(1)
 
 def connect_to_openbarrage():
