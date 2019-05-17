@@ -38,11 +38,15 @@ class SSHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                 start_id = post_data['start_id'][0]
             else:
                 start_id = 0xffffffff
-            cursor.execute("select * from barrage where nickname=? and id < ? order by id desc limit 24", (username, start_id))
-            rows = cursor.fetchall()
-            for v in rows:
-                dmDict = {'id':v[0], 'uid':v[1], 'nickname':v[2], 'content':v[3], 'level':v[4], 'bnn':v[5], 'bl':v[6], 'brid':v[7], 'cst':v[8]}
-                results.append(json.dumps(dmDict, ensure_ascii=False))
+            cursor.execute("select uid from barrage where nickname=? and id < ? order by id desc limit 1", (username, start_id))
+            v = cursor.fetchone()
+            if v:
+                uid = v[0]
+                cursor.execute("select * from barrage where uid=? and id < ? order by id desc limit 24", (uid, start_id))
+                rows = cursor.fetchall()
+                for v in rows:
+                    dmDict = {'id':v[0], 'uid':v[1], 'nickname':v[2], 'content':v[3], 'level':v[4], 'bnn':v[5], 'bl':v[6], 'brid':v[7], 'cst':v[8]}
+                    results.append(json.dumps(dmDict, ensure_ascii=False))
         except:
             traceback.print_exc()
         finally:
