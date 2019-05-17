@@ -154,8 +154,7 @@
 				console.log("您的浏览器支持 WebSocket!");
 				
 			// Create WebSocket connection.
-			// const socket = new WebSocket('ws://localhost:8765');
-			const socket = new WebSocket('ws://149.129.32.134:8765');
+			const socket = new WebSocket('ws://' + document.domain + ':8765');
 
 			var barrageArea = document.getElementById("BarrageArea");
 			var barrageConnectionStatus = document.getElementById("BarrageConnectionStatus");
