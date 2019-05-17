@@ -15,7 +15,12 @@
 		&nbsp;
 		<span>弹幕服务器：</span>
 		<span id="BarrageConnectionStatus"></span>
+		<span style="margin-left: 10px;">
+			弹幕数量：
+			<span id="BarrageCount">-</span>
+		</span>
 	</div>
+
 	<div id="BarrageArea" style="margin-left: 10px; margin-right: 10px; margin-top: 10px; overflow:auto; height: 600px; width: auto; border: 1px solid #66ccff; padding: 10px 10px 10px 10px;", onscroll="onScrollBarrageArea(this)">
 	</div>
 	<div style="padding: 10px 10px 10px 10px;">
@@ -135,6 +140,13 @@
 
 		}
 
+		var barrageCountElem = document.getElementById("BarrageCount")
+		function setBarrageCount(count) 
+		{
+			barrageCountElem.innerHTML = count.toString().replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,');
+		}
+
+
 		function startBarrageWebSocket()
 		{
 			if ("WebSocket" in window)
@@ -162,6 +174,7 @@
 				var obj = JSON.parse(event.data);
 				// console.log('Message from server ', obj);
 				appendBarrageElement(obj, barrageArea, false)
+				setBarrageCount(obj.id + 1);
 			});
 
 			socket.addEventListener('close', function (event) {
@@ -169,109 +182,17 @@
 					console.log("disconnected")
 					barrageConnectionStatus.innerHTML = "连接已断开"
 				});
-		}
-		
-		else
-		{
-			 // 浏览器不支持 WebSocket
-			 console.log("您的浏览器不支持 WebSocket!")
-		 }
-	 }
-	 startBarrageWebSocket()
-
-	 function search_user_barrages()
-	 {
-		var xmlhttp = new XMLHttpRequest();
-		xmlhttp.open("POST", "search_user_barrages", true)
-		xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
-		xmlhttp.onreadystatechange = function()
-		{
-			if (xmlhttp.readyState == 4)
+			}
+			else
 			{
-				if (xmlhttp.status == 200)
-				{
-					var barrgaes = JSON.parse(xmlhttp.responseText)
-					var userBarrageArea = document.getElementById("BarrageArea-User");
-					userBarrageArea.style.display = "block"
-					clearElements(userBarrageArea)
-					for (var i = 0; i < barrgaes.length; ++i) 
-					{
-						var barrgae = JSON.parse(barrgaes[i])
-						appendBarrageElement(barrgae, userBarrageArea, true)
-					}
-				}
-
-				var search_prompt = document.getElementById("search_prompt");
-				search_prompt.style.display = "none";
-				var search_button = document.getElementById("search_button");
-				search_button.style.display = "inline";
+				 // 浏览器不支持 WebSocket
+				 console.log("您的浏览器不支持 WebSocket!")
 			}
 		}
+	 
 
-		var usernameInput = document.getElementById("username");
-		var username = usernameInput.value
-		if (username != "")
+		function search_user_barrages()
 		{
-			var search_prompt = document.getElementById("search_prompt");
-			search_prompt.style.display = "inline";
-			var search_button = document.getElementById("search_button");
-			search_button.style.display = "none";
-			xmlhttp.send("username="+username)
-		}
-	}
-
-	function fillUserName(obj)
-	{
-		var usernameInput = document.getElementById("username");
-		username.value = obj.title
-	}
-
-	function onScrollBarrageArea(obj)
-	{
-		if (obj.scrollTop == 0)
-		{
-			var firstChild = obj.firstElementChild
-			var start_id = firstChild.getAttribute("Barrage-id")
-			var xmlhttp = new XMLHttpRequest();
-			xmlhttp.open("POST", "load_barrages", true)
-			xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
-			xmlhttp.onreadystatechange = function()
-			{
-				if (xmlhttp.readyState == 4)
-				{
-					if (xmlhttp.status == 200)
-					{
-						var barrgaes = JSON.parse(xmlhttp.responseText)
-						var barrageArea = document.getElementById("BarrageArea");
-						var lastScrollHeight = obj.scrollHeight
-						for (var i = 0; i < barrgaes.length; ++i) 
-						{
-							var barrgae = JSON.parse(barrgaes[i])
-							insertBarrageElement(barrgae, barrageArea)
-						}
-						obj.scrollTop = obj.scrollHeight - lastScrollHeight
-					}
-				}
-			}
-
-			xmlhttp.send("start_id="+start_id)
-		}
-		
-	}
-
-	function onScrollUserBarrageArea(obj)
-	{
-		if (obj.scrollTop == (obj.scrollHeight - obj.clientHeight))
-		{
-			var usernameInput = document.getElementById("username");
-			var username = usernameInput.value
-			if (username == "")
-			{
-				return
-			}
-
-			var lastChild = obj.lastElementChild
-			var start_id = lastChild.getAttribute("Barrage-id")
 			var xmlhttp = new XMLHttpRequest();
 			xmlhttp.open("POST", "search_user_barrages", true)
 			xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
@@ -281,27 +202,120 @@
 				{
 					if (xmlhttp.status == 200)
 					{
-						if (usernameInput.value != username)
-						{
-							// abort
-							return
-						}
-
 						var barrgaes = JSON.parse(xmlhttp.responseText)
-						var barrageArea = document.getElementById("BarrageArea-User");
-						var lastScrollHeight = obj.scrollHeight
+						var userBarrageArea = document.getElementById("BarrageArea-User");
+						userBarrageArea.style.display = "block"
+						clearElements(userBarrageArea)
 						for (var i = 0; i < barrgaes.length; ++i) 
 						{
 							var barrgae = JSON.parse(barrgaes[i])
-							appendBarrageElement(barrgae, barrageArea, true)
+							appendBarrageElement(barrgae, userBarrageArea, true)
 						}
-						// obj.scrollTop = obj.scrollHeight - lastScrollHeight
 					}
+
+					var search_prompt = document.getElementById("search_prompt");
+					search_prompt.style.display = "none";
+					var search_button = document.getElementById("search_button");
+					search_button.style.display = "inline";
 				}
 			}
 
-			xmlhttp.send("username="+username+"&start_id="+start_id)
+			var usernameInput = document.getElementById("username");
+			var username = usernameInput.value
+			if (username != "")
+			{
+				var search_prompt = document.getElementById("search_prompt");
+				search_prompt.style.display = "inline";
+				var search_button = document.getElementById("search_button");
+				search_button.style.display = "none";
+				xmlhttp.send("username="+username)
+			}
 		}
-	}
+
+		function fillUserName(obj)
+		{
+			var usernameInput = document.getElementById("username");
+			username.value = obj.title
+		}
+
+		function onScrollBarrageArea(obj)
+		{
+			if (obj.scrollTop == 0)
+			{
+				var firstChild = obj.firstElementChild
+				var start_id = firstChild.getAttribute("Barrage-id")
+				var xmlhttp = new XMLHttpRequest();
+				xmlhttp.open("POST", "load_barrages", true)
+				xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+				xmlhttp.onreadystatechange = function()
+				{
+					if (xmlhttp.readyState == 4)
+					{
+						if (xmlhttp.status == 200)
+						{
+							var barrgaes = JSON.parse(xmlhttp.responseText)
+							var barrageArea = document.getElementById("BarrageArea");
+							var lastScrollHeight = obj.scrollHeight
+							for (var i = 0; i < barrgaes.length; ++i) 
+							{
+								var barrgae = JSON.parse(barrgaes[i])
+								insertBarrageElement(barrgae, barrageArea)
+							}
+							obj.scrollTop = obj.scrollHeight - lastScrollHeight
+						}
+					}
+				}
+
+				xmlhttp.send("start_id="+start_id)
+			}
+			
+		}
+
+		function onScrollUserBarrageArea(obj)
+		{
+			if (obj.scrollTop == (obj.scrollHeight - obj.clientHeight))
+			{
+				var usernameInput = document.getElementById("username");
+				var username = usernameInput.value
+				if (username == "")
+				{
+					return
+				}
+
+				var lastChild = obj.lastElementChild
+				var start_id = lastChild.getAttribute("Barrage-id")
+				var xmlhttp = new XMLHttpRequest();
+				xmlhttp.open("POST", "search_user_barrages", true)
+				xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+				xmlhttp.onreadystatechange = function()
+				{
+					if (xmlhttp.readyState == 4)
+					{
+						if (xmlhttp.status == 200)
+						{
+							if (usernameInput.value != username)
+							{
+								// abort
+								return
+							}
+
+							var barrgaes = JSON.parse(xmlhttp.responseText)
+							var barrageArea = document.getElementById("BarrageArea-User");
+							var lastScrollHeight = obj.scrollHeight
+							for (var i = 0; i < barrgaes.length; ++i) 
+							{
+								var barrgae = JSON.parse(barrgaes[i])
+								appendBarrageElement(barrgae, barrageArea, true)
+							}
+							// obj.scrollTop = obj.scrollHeight - lastScrollHeight
+						}
+					}
+				}
+
+				xmlhttp.send("username="+username+"&start_id="+start_id)
+			}
+		}
+
+		startBarrageWebSocket()
 </script>
 </html>
