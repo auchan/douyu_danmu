@@ -26,7 +26,8 @@ logger.addHandler(logging.StreamHandler())
 in_q = Queue()
 connected = set()
 history_barrages = list()
-HISTORY_BARRAGES_SIZE = 24
+HISTORY_BARRAGES_MAX_SIZE = 24
+IN_QUEUE_MAX_SIZE = 20
 TABLE_NAME="barrage"
 isExit = False
 
@@ -103,7 +104,7 @@ def start(client, roomid, in_q):
     log_filename = "barrage_{0}.txt".format(roomid)
     try:
         conn, cursor = opendb(roomid)
-        cursor.execute("select * from barrage order by id desc limit ?", (HISTORY_BARRAGES_SIZE,))
+        cursor.execute("select * from barrage order by id desc limit ?", (HISTORY_BARRAGES_MAX_SIZE,))
         history_list = cursor.fetchall()
         history_barrages = []
         for i in range(len(history_list)-1,-1,-1):
@@ -154,6 +155,13 @@ def start(client, roomid, in_q):
 
                         dmDict['id'] = cursor.lastrowid
                         dmJsonStr = json.dumps(dmDict, ensure_ascii=False)+'\n'
+                        if in_q.qsize() > IN_QUEUE_MAX_SIZE:
+                            try:
+                                # remove one
+                                in_q.get(False)
+                            except queue.Empty:
+                                # consume speed is too high!
+                                pass
                         in_q.put(dmJsonStr)
                         # print(dmJsonStr)
                     conn.commit()
@@ -229,7 +237,7 @@ async def producer_handler(websocket, path):
                     message = await async_producer()
                     if message:
                         history_barrages.append(message)
-                        if len(history_barrages) > HISTORY_BARRAGES_SIZE:
+                        if len(history_barrages) > HISTORY_BARRAGES_MAX_SIZE:
                             history_barrages.pop(0)
 
                         await asyncio.wait([ws.send(message) for ws in connected if not ws.closed])
