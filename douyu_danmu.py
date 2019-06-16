@@ -227,10 +227,11 @@ async def producer_handler(websocket, path):
     # Register.
     connected.add(websocket)
     #print("connected count: ", len(connected))
-    #send history
-    for message in history_barrages:
-        await websocket.send(message)
     try:
+        #send history
+        for message in history_barrages:
+            await websocket.send(message)
+
         if len(connected) == 1:
             while len(connected) > 0:
                 try:
@@ -258,6 +259,10 @@ async def producer_handler(websocket, path):
                         break
                 except websockets.exceptions.ConnectionClosed:
                     break
+    except:
+        time_str = datetime.now(tz).strftime('%Y-%m-%d %H:%M:%S')
+        print("excepttion occurred at " + time_str)
+        traceback.print_exc()
     finally:
         #print("closed", websocket, path)
         # Unregister.
@@ -270,7 +275,7 @@ async def wakeup():
         if isExit:
             time_str = datetime.now(tz).strftime('%Y-%m-%d %H:%M:%S')
             print("exit at " + time_str)
-            sys.exit(1)
+            break
 
 def connect_to_openbarrage():
     # 配置socket的ip和端口
@@ -299,5 +304,6 @@ if __name__ == '__main__':
     loop.create_task(wakeup())
     try:
         loop.run_forever()
-    except KeyboardInterrupt:
+    except KeyboardInterrupt as e:
+        print("KeyboardInterrupt")
         isExit = True
