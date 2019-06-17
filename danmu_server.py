@@ -298,12 +298,17 @@ if __name__ == '__main__':
     thread1.start()
     thread2.start()
 
-    start_server = websockets.serve(producer_handler, '', 8765)
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(start_server)
-    loop.create_task(wakeup())
     try:
+        start_server = websockets.serve(producer_handler, '', 8765)
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(start_server)
+        loop.create_task(wakeup())
         loop.run_forever()
     except KeyboardInterrupt as e:
         print("KeyboardInterrupt")
         isExit = True
+    except:
+        isExit = True
+        time_str = datetime.now(tz).strftime('%Y-%m-%d %H:%M:%S')
+        print("excepttion occurred at " + time_str)
+        traceback.print_exc()
