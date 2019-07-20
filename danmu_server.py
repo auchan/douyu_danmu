@@ -16,6 +16,7 @@ import threading
 from concurrent.futures import ThreadPoolExecutor
 import sqlite3
 import os
+import io
 import traceback
 
 import logging
@@ -33,6 +34,7 @@ isExit = False
 
 # 获取用户昵称及弹幕信息的正则表达式
 danmu = re.compile(b'type@=chatmsg.*?/uid@=(.*?)/nn@=(.*?)/txt@=(.*?)/.*?/level@=(.*?)/.*?/cst@=(.*?)/bnn@=(.*?)/bl@=(.*?)/brid@=(.*?)/')
+keeplivePattern = re.compile(b'type@=keeplive.*')
 
 # 获取中国-上海时区
 tz = pytz.timezone('Asia/Shanghai')
@@ -101,7 +103,6 @@ def start(client, roomid, in_q):
     sendmsg(client, msg_more)
 
     print('---------------欢迎连接到{}的直播间---------------'.format(get_name(roomid)))
-    log_filename = "barrage_{0}.txt".format(roomid)
     try:
         conn, cursor = opendb(roomid)
         cursor.execute("select * from barrage order by id desc limit ?", (HISTORY_BARRAGES_MAX_SIZE,))
@@ -117,68 +118,85 @@ def start(client, roomid, in_q):
         return
 
     recvdata_time = time.time()
-    while True:
-        try:
-            data = client.recv(4096)
-            danmu_more = danmu.findall(data)
-            recvdata_time = time.time()
-            if not data:
-                break
-            else:
-                try:
-                    for i in danmu_more:
-                        msg_content = data.decode(encoding='utf-8', errors='ignore').replace("@S", "/").replace("@A=", ":").replace("@=", ":")
-                        
-                        dmDict={}
-                        idx = 0
-                        dmDict['uid'] = cast_to_int(i[idx].decode(encoding='utf-8', errors='ignore'))
-                        idx += 1
-                        dmDict['nickname'] = i[idx].decode(encoding='utf-8', errors='ignore')
-                        idx += 1
-                        dmDict['content'] = i[idx].decode(encoding='utf-8', errors='ignore')
-                        idx += 1
-                        dmDict['level'] = cast_to_int(i[idx].decode(encoding='utf-8', errors='ignore'))
-                        idx += 1
-                        dmDict['cst'] = cast_to_int(i[idx].decode(encoding='utf-8', errors='ignore'))
-                        idx += 1
-                        dmDict['bnn'] = i[idx].decode(encoding='utf-8', errors='ignore')
-                        idx += 1
-                        dmDict['bl'] = cast_to_int(i[idx].decode(encoding='utf-8', errors='ignore'))
-                        idx += 1
-                        dmDict['brid'] = cast_to_int(i[idx].decode(encoding='utf-8', errors='ignore'))
-                        #override cst
-                        dmDict['cst'] = round(time.time() * 1000)
-                        # time_str = datetime.now(tz).strftime('%Y-%m-%d %H:%M:%S')
-                        # print("<" + time_str + "> " + dmDict['nickname'] + ": "+ dmDict['content'])
-                        cursor.execute('''INSERT INTO barrage (uid,nickname,content,level,bnn,bl,brid,cst) VALUES(?,?,?,?,?,?,?,?)''', 
-                            (dmDict['uid'], dmDict['nickname'], dmDict['content'], dmDict['level'], dmDict['bnn'], dmDict['bl'], dmDict['brid'], dmDict['cst']))
+    try:
+        dataCache = []
+        isWriteDebugInfo = False
+        while not isExit:
+            try:
+                data = client.recv(4096)
+                if not data:
+                    print("error: no data")
+                    isExit = True
+                    break
+                
+                if keeplivePattern.search(data) != None:
+                    recvdata_time = time.time()
 
-                        dmDict['id'] = cursor.lastrowid
-                        dmJsonStr = json.dumps(dmDict, ensure_ascii=False)+'\n'
-                        if in_q.qsize() > IN_QUEUE_MAX_SIZE:
-                            try:
-                                # remove one
-                                in_q.get(False)
-                            except queue.Empty:
-                                # consume speed is too high!
-                                pass
-                        in_q.put(dmJsonStr)
-                        # print(dmJsonStr)
-                    conn.commit()
-                except Exception as e:
-                    traceback.print_exc()
-                    continue
-        except BlockingIOError:
-            time.sleep(0.1)
-            if time.time() - recvdata_time > 40:
-                isExit = True
-            if isExit:
-                return
-        except:
-            isExit = True
-            traceback.print_exc()
-            conn.close()
-            return
+                dataCache.append(data)
+                if isWriteDebugInfo and len(dataCache) >= 10:
+                    debug_log_filename = "debug_barrage_{0}.txt".format(roomid)
+                    with io.open(debug_log_filename, "w", encoding='utf-8') as f:
+                        for xdata in dataCache:
+                            f.write(xdata[12:].decode(encoding='utf-8', errors='ignore')  + "\n")
+                    dataCache = []
+
+                danmu_more = danmu.findall(data)
+                if danmu_more != None:
+                    try:
+                        for i in danmu_more:
+                            msg_content = data.decode(encoding='utf-8', errors='ignore').replace("@S", "/").replace("@A=", ":").replace("@=", ":")
+                            
+                            dmDict={}
+                            idx = 0
+                            dmDict['uid'] = cast_to_int(i[idx].decode(encoding='utf-8', errors='ignore'))
+                            idx += 1
+                            dmDict['nickname'] = i[idx].decode(encoding='utf-8', errors='ignore')
+                            idx += 1
+                            dmDict['content'] = i[idx].decode(encoding='utf-8', errors='ignore')
+                            idx += 1
+                            dmDict['level'] = cast_to_int(i[idx].decode(encoding='utf-8', errors='ignore'))
+                            idx += 1
+                            dmDict['cst'] = cast_to_int(i[idx].decode(encoding='utf-8', errors='ignore'))
+                            idx += 1
+                            dmDict['bnn'] = i[idx].decode(encoding='utf-8', errors='ignore')
+                            idx += 1
+                            dmDict['bl'] = cast_to_int(i[idx].decode(encoding='utf-8', errors='ignore'))
+                            idx += 1
+                            dmDict['brid'] = cast_to_int(i[idx].decode(encoding='utf-8', errors='ignore'))
+                            #override cst
+                            dmDict['cst'] = round(time.time() * 1000)
+                            # time_str = datetime.now(tz).strftime('%Y-%m-%d %H:%M:%S')
+                            # print("<" + time_str + "> " + dmDict['nickname'] + ": "+ dmDict['content'])
+                            cursor.execute('''INSERT INTO barrage (uid,nickname,content,level,bnn,bl,brid,cst) VALUES(?,?,?,?,?,?,?,?)''', 
+                                (dmDict['uid'], dmDict['nickname'], dmDict['content'], dmDict['level'], dmDict['bnn'], dmDict['bl'], dmDict['brid'], dmDict['cst']))
+
+                            dmDict['id'] = cursor.lastrowid
+                            dmJsonStr = json.dumps(dmDict, ensure_ascii=False)+'\n'
+                            if in_q.qsize() > IN_QUEUE_MAX_SIZE:
+                                try:
+                                    # remove one
+                                    in_q.get(False)
+                                except queue.Empty:
+                                    # consume speed is too high!
+                                    pass
+                            in_q.put(dmJsonStr)
+                            # print(dmJsonStr)
+                        conn.commit()
+                    except Exception as e:
+                        traceback.print_exc()
+                        continue
+            except BlockingIOError:
+                time.sleep(0.1)
+                if time.time() - recvdata_time > 40:
+                    print("error: keeplive timeout")
+                    isExit = True
+                    break
+    except:
+        isExit = True
+        traceback.print_exc()
+        return
+    finally:
+        conn.close()
 
 def sleep(duration):
     count = 0
@@ -223,6 +241,7 @@ async def async_producer():
 
 async def producer_handler(websocket, path):
     global history_barrages
+    global isExit
     #print("connected", websocket, path)
     # Register.
     connected.add(websocket)
@@ -233,7 +252,7 @@ async def producer_handler(websocket, path):
             await websocket.send(message)
 
         if len(connected) == 1:
-            while len(connected) > 0:
+            while len(connected) > 0 and not isExit:
                 try:
                     message = await async_producer()
                     if message:
@@ -259,7 +278,7 @@ async def producer_handler(websocket, path):
                         break
                 except websockets.exceptions.ConnectionClosed:
                     break
-    except:
+    except websockets.exceptions.ConnectionClosed:
         time_str = datetime.now(tz).strftime('%Y-%m-%d %H:%M:%S')
         print("excepttion occurred at " + time_str)
         traceback.print_exc()
@@ -275,6 +294,7 @@ async def wakeup():
         if isExit:
             time_str = datetime.now(tz).strftime('%Y-%m-%d %H:%M:%S')
             print("exit at " + time_str)
+            exit(1)
             break
 
 def connect_to_openbarrage():
