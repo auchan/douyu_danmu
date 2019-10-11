@@ -18,6 +18,8 @@ import sqlite3
 import os
 import io
 import traceback
+import ssl
+import pathlib
 
 import logging
 logger = logging.getLogger('websockets')
@@ -120,7 +122,6 @@ def start(client, roomid, in_q):
     recvdata_time = time.time()
     try:
         dataCache = []
-        isWriteDebugInfo = False
         while not isExit:
             try:
                 data = client.recv(4096)
@@ -129,11 +130,11 @@ def start(client, roomid, in_q):
                     isExit = True
                     break
                 
-                if keeplivePattern.search(data) != None:
-                    recvdata_time = time.time()
+                #if keeplivePattern.search(data) != None:
+                recvdata_time = time.time()
 
                 dataCache.append(data)
-                if isWriteDebugInfo and len(dataCache) >= 10:
+                if len(dataCache) >= 10:
                     debug_log_filename = "debug_barrage_{0}.txt".format(roomid)
                     with io.open(debug_log_filename, "w", encoding='utf-8') as f:
                         for xdata in dataCache:
@@ -319,6 +320,11 @@ if __name__ == '__main__':
     thread2.start()
 
     try:
+        #ssl
+        #ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        #localhost_pem = pathlib.Path("cert/lovehanser.live.pem")
+        #ssl_context.load_cert_chain(localhost_pem)
+
         start_server = websockets.serve(producer_handler, '', 8765)
         loop = asyncio.get_event_loop()
         loop.run_until_complete(start_server)
