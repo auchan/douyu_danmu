@@ -119,7 +119,8 @@ function startBarrageWebSocket()
 		console.log("您的浏览器支持 WebSocket!");
 		
 	// Create WebSocket connection.
-	const socket = new WebSocket('ws://' + document.domain + ':8765');
+	const socket = new WebSocket('wss://' + document.domain + '/ws_danmu');
+	// const socket = new WebSocket('ws://' + document.domain + ':8765');
 
 	var barrageArea = document.getElementById("BarrageArea");
 	var barrageConnectionStatus = document.getElementById("BarrageConnectionStatus");
@@ -157,6 +158,8 @@ function startBarrageWebSocket()
 
 function search_user_barrages()
 {
+	var search_button_original_class_name
+
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.open("POST", "search_user_barrages", true)
 	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
@@ -175,24 +178,33 @@ function search_user_barrages()
 					var barrgae = JSON.parse(barrgaes[i])
 					appendBarrageElement(barrgae, userBarrageArea, true)
 				}
+
+				$("#BarrageArea-User").transition('pulse');
 			}
 
-			var search_prompt = document.getElementById("search_prompt");
-			search_prompt.style.display = "none";
 			var search_button = document.getElementById("search_button");
-			search_button.style.display = "inline";
+			search_button.className = search_button_original_class_name;
 		}
 	}
 
+	var error_msg_group = document.getElementById("search_error_message_group")
 	var usernameInput = document.getElementById("username");
 	var username = usernameInput.value
 	if (username != "")
 	{
-		var search_prompt = document.getElementById("search_prompt");
-		search_prompt.style.display = "inline";
+		error_msg_group.style.display = "none";
+
 		var search_button = document.getElementById("search_button");
-		search_button.style.display = "none";
+		search_button_original_class_name = search_button.className;
+		search_button.className += " loading disabled";
 		xmlhttp.send("username="+username)
+	}
+	else
+	{
+		error_msg_group.style.display = "block";
+		var error_msg_label = document.getElementById("search_error_message")
+		error_msg_label.innerHTML = "请输入用户名或者选择下方弹幕列表中的用户名。";
+		$("#search_error_message_group").transition('pulse');
 	}
 }
 

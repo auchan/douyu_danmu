@@ -1,39 +1,74 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Hanser直播间弹幕查询</title>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href="styles/main.css" rel="stylesheet" type="text/css">
-	<link href="styles/danmu_lite_0.css" rel="stylesheet" type="text/css"  />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- semantic-ui begin -->
+	<link rel="stylesheet" type="text/css" href="3rd/semantic-ui/semantic.min.css">
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+		integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+	<script src="3rd/semantic-ui/semantic.min.js"></script>
+	<!-- semantic-ui end-->
+
+	<!-- app begin -->
+	<!-- <link href="styles/main.css" rel="stylesheet" type="text/css"> -->
+	<link href="styles/danmu_lite_0.css?v=1" rel="stylesheet" type="text/css" />
+	<!-- app end -->
 </head>
-<style>
 
-</style>
 <body>
-	<div class="BarrageContainer">
-		<span>房间号：</span>
-		<a id="RoomID" href="https://www.douyu.com/2550505" target="_blank">2550505</a>
-		&nbsp;
-		<span>弹幕服务器：</span>
-		<span id="BarrageConnectionStatus"></span>
-		<span style="margin-left: 10px;">
-			弹幕数量：
-			<span id="BarrageCount">-</span>
-		</span>
-	</div>
+	<div class="BarragePageWrap">
+		<div class="BarrageBanner"></div>
+		<div class="BarrageContentWrap ui segment">
+			<div class="BarrageContainer">
+				<span>房间号：</span>
+				<a id="RoomID" href="https://www.douyu.com/2550505" target="_blank">2550505</a>
+				&nbsp;
+				<span>弹幕服务器：</span>
+				<span id="BarrageConnectionStatus"></span>
+				<span style="margin-left: 10px;">
+					弹幕数量：
+					<span id="BarrageCount">-</span>
+				</span>
+			</div>
 
-	<div id="BarrageArea" class="BarrageArea", onscroll="onScrollBarrageArea(this)">
-	</div>
-	<div class="BarrageContainer">
-		<span>查询用户弹幕：</span>
-		<input type="text" id="username">
-		<button type="button" onclick="search_user_barrages()" id="search_button">Search！</button>
-		<span style="display: none" id="search_prompt">查询中...</span>
-	</div>
-	<div id="BarrageArea-User" class="BarrageArea-User", onscroll="onScrollUserBarrageArea(this)">
-	</div>
+			<div class="ui horizontal divider">
+				<i class="user icon"></i>
+				User
+			</div>
 
-	<script type="text/javascript" src="js/danmu.js?v=2"></script>
+			<div>
+				<div class="ui large icon input">
+					<input type="text" placeholder="查询用户弹幕" id="username">
+				</div>
+				<button class="right attached blue large ui icon button" onclick="search_user_barrages()"
+					id="search_button">
+					<i class="search icon"></i>
+					<span style="display: none" id="search_prompt">查询中...</span>
+				</button>
+				<div class="ui negative message" id="search_error_message_group" style="display:none">
+					<div class="header" id="search_error_message">
+					</div>
+				</div>
+
+				<div class="ui green padded segment BarrageArea-User" id="BarrageArea-User"
+					onscroll="onScrollUserBarrageArea(this)">
+				</div>
+
+				<div class="ui horizontal divider">
+					<i class="comments icon"></i>
+					All
+				</div>
+
+				<div class="ui blue padded segment BarrageArea" id="BarrageArea" onscroll="onScrollBarrageArea(this)">
+				</div>
+			</div>
+			<script type="text/javascript" src="js/danmu.js?v=3"></script>
+		</div>
+	</div>
 </body>
+
 </html>
