@@ -127,7 +127,7 @@ function startBarrageWebSocket () {
     console.log('[danmu] WebSocket is supported!')
 
     // Create WebSocket connection.
-    const socket = new WebSocket('wss://' + document.domain + '/ws_danmu');
+    const socket = new WebSocket('wss://' + document.domain + '/ws_danmu')
     // const socket = new WebSocket('ws://' + document.domain + ':8765')
 
     var barrageList = []
