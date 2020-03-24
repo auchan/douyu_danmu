@@ -1,0 +1,28 @@
+{
+  "name": "danmu",
+  "version": "1.0.0",
+  "description": "receive and display barrages from server",
+  "main": "danmu.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/auchan/douyu_danmu.git"
+  },
+  "author": "auchan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/auchan/douyu_danmu/issues"
+  },
+  "homepage": "https://github.com/auchan/douyu_danmu#readme",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "eslint-plugin-vue": "^6.2.2"
+  }
+}

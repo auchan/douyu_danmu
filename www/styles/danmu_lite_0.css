@@ -808,6 +808,18 @@ li {
     cursor: pointer
 }
 
+.Barrage-date {
+    margin-right: 1px;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle
+}
+
+.Barrage-date--blue,.Barrage-date--blue:hover {
+    color: #2b94ff;
+    cursor: pointer
+}
+
 .Barrage-listItem {
     position: relative;
     line-height: 21px;
@@ -857,6 +869,10 @@ li {
 
 .BarrageContentWrap {
     height: 100%;
+}
+.BarrageSpan {
+    margin-left: 2px;
+    margin-right: 2px;
 }
 
 /*@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600,700);*/

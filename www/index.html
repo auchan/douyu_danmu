@@ -6,6 +6,11 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+	<!-- vue begin -->
+	<!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<!-- vue end -->
+
 	<!-- semantic-ui begin -->
 	<link rel="stylesheet" type="text/css" href="3rd/semantic-ui/semantic.min.css">
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"
@@ -15,7 +20,7 @@
 
 	<!-- app begin -->
 	<!-- <link href="styles/main.css" rel="stylesheet" type="text/css"> -->
-	<link href="styles/danmu_lite_0.css?v=1" rel="stylesheet" type="text/css" />
+	<link href="styles/danmu_lite_0.css?v=202003250111" rel="stylesheet" type="text/css" />
 	<!-- app end -->
 </head>
 
@@ -24,49 +29,41 @@
 		<div class="BarrageBanner"></div>
 		<div class="BarrageContentWrap ui segment">
 			<div class="BarrageContainer">
-				<span>房间号：</span>
-				<a id="RoomID" href="https://www.douyu.com/2550505" target="_blank">2550505</a>
-				&nbsp;
-				<span>弹幕服务器：</span>
-				<span id="BarrageConnectionStatus"></span>
-				<span style="margin-left: 10px;">
-					弹幕数量：
-					<span id="BarrageCount">-</span>
-				</span>
+				<barrage-room-id :room-id="2550505"></barrage-room-id>
+				<barrage-connection-status :barrage-statistics="barrageStatistics"></barrage-connection-status>
+				<barrage-counter :barrage-statistics="barrageStatistics"></barrage-counter>
 			</div>
 
 			<div class="ui horizontal divider">
-				<i class="user icon"></i>
-				User
+				<i class="user icon"></i> User
 			</div>
 
 			<div>
 				<div class="ui large icon input">
 					<input type="text" placeholder="查询用户弹幕" id="username">
 				</div>
-				<button class="right attached blue large ui icon button" onclick="search_user_barrages()"
-					id="search_button">
-					<i class="search icon"></i>
-					<span style="display: none" id="search_prompt">查询中...</span>
-				</button>
+				<barrage-search-button></barrage-search-button>
 				<div class="ui negative message" id="search_error_message_group" style="display:none">
 					<div class="header" id="search_error_message">
 					</div>
 				</div>
 
-				<div class="ui green padded segment BarrageArea-User" id="BarrageArea-User"
-					onscroll="onScrollUserBarrageArea(this)">
-				</div>
+				<ul class="ui green padded segment BarrageArea-User" id="BarrageArea-User"
+					@scroll="onScrollBarrageArea">
+					<li is="barrage-list-item" v-for="barrage in barrages" :key="barrage.id" :barrage="barrage">
+					</li>
+				</ul>
 
 				<div class="ui horizontal divider">
-					<i class="comments icon"></i>
-					All
+					<i class="comments icon"></i> All
 				</div>
 
-				<div class="ui blue padded segment BarrageArea" id="BarrageArea" onscroll="onScrollBarrageArea(this)">
-				</div>
+				<ul class="ui blue padded segment BarrageArea" id="BarrageArea" @scroll="onScrollBarrageArea">
+					<li is="barrage-list-item" v-for="barrage in barrages" :key="barrage.id" :barrage="barrage">
+					</li>
+				</ul>
 			</div>
-			<script type="text/javascript" src="js/danmu.js?v=3"></script>
+			<script type="text/javascript" src="js/danmu.js?v=202003250111"></script>
 		</div>
 	</div>
 </body>

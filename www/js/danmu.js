@@ -1,295 +1,353 @@
-function dateFtt(fmt,date)   
-{ //author: meizz   
-	var o = {   
-		"M+" : date.getMonth()+1,                 //月份   
-		"d+" : date.getDate(),                    //日   
-		"h+" : date.getHours(),                   //小时   
-		"m+" : date.getMinutes(),                 //分   
-		"s+" : date.getSeconds(),                 //秒   
-		"q+" : Math.floor((date.getMonth()+3)/3), //季度   
-		"S"  : date.getMilliseconds()             //毫秒   
-	};   
-	if(/(y+)/.test(fmt))   
-		fmt=fmt.replace(RegExp.$1, (date.getFullYear()+"").substr(4 - RegExp.$1.length));   
-	for(var k in o)   
-		if(new RegExp("("+ k +")").test(fmt))   
-			fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));   
-		return fmt;   
-} 
+/* eslint-disable no-new */
+/* eslint-disable no-undef */
+/****************************************************************************/
+// Global variables
+/****************************************************************************/
+var fontColorArray = [6, 1, 2, 5, 3, 0, 4]
+var userBarrageList = []
+var barrageStatistics = { count: 0, connectionStatus: '未连接' }
+/****************************************************************************/
 
-var fontColorArray = new Array(6, 1, 2, 5, 3, 0, 4)
-
-function createBarrageElement(obj)
-{
-	var li = document.createElement("li")
-	li.className = "Barrage-listItem"
-	li.setAttribute("Barrage-id", obj.id)
-
-	// time
-	var date = new Date(parseInt(obj.cst));
-	var span = document.createElement("span")
-	span.className = "Barrage-nickName Barrage-nickName--blue"
-	span.innerHTML = dateFtt("yyyy-MM-dd hh:mm:ss", date) + "&nbsp;"
-	li.appendChild(span)
-
-	var fontColorId = 6
-	if (obj.bl > 0)
-	{
-		if (obj.bl >= 6)
-		{
-			var index = Math.floor((obj.bl - 6) / 3) + 1
-			index = index > 6 ? 6 : index;
-			fontColorId = fontColorArray[index]  
-		}
-		
-		var a = document.createElement("a")
-		a.className = "FansMedal level-" + obj.bl
-		var span = document.createElement("span")
-		span.className = "FansMedal-name"
-		span.innerHTML = obj.bnn
-		a.appendChild(span)
-		li.appendChild(a)
-	}
-	var span = document.createElement("span")
-	span.innerHTML = "&nbsp;"
-	li.appendChild(span)
-
-
-	var span = document.createElement("span")
-	span.className = "UserLevel UserLevel--" + obj.level
-	span.setAttribute("title", "用户等级：" + obj.level)
-	li.appendChild(span)
-
-	var span = document.createElement("span")
-	span.className = "Barrage-nickName Barrage-nickName--blue"
-	span.setAttribute("title", obj.nickname)
-	span.setAttribute("onclick", "fillUserName(this)")
-	span.innerHTML = obj.nickname + "："
-	li.appendChild(span)
-
-	var span = document.createElement("span")
-	span.className = "Barrage-content Barrage-content--color"+fontColorId
-	span.innerHTML = obj.content
-	li.appendChild(span)
-
-	return li
+function dateFtt (fmt, date) {
+  var o = {
+    'M+': date.getMonth() + 1, // 月份
+    'd+': date.getDate(), // 日
+    'h+': date.getHours(), // 小时
+    'm+': date.getMinutes(), // 分
+    's+': date.getSeconds(), // 秒
+    'q+': Math.floor((date.getMonth() + 3) / 3), // 季度
+    S: date.getMilliseconds() // 毫秒
+  }
+  if (/(y+)/.test(fmt)) { fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length)) }
+  for (var k in o) {
+    if (new RegExp('(' + k + ')').test(fmt)) { fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length))) }
+  }
+  return fmt
 }
 
-function appendBarrageElement(obj, root, isTopDown)
-{
-	var bottomScrollTop = root.scrollHeight - root.clientHeight
-	var li = createBarrageElement(obj)
-	root.appendChild(li)
-	if (!isTopDown)
-	{
-		if (root.scrollTop == bottomScrollTop)
-		{
-			root.scrollTop = (root.scrollHeight - root.clientHeight);
-		}
-	}
+function createBarrageListVM (barrageList, root) {
+  var lastScrollHeight = 0
+  return new Vue({
+    el: root,
+    data: {
+      barrages: barrageList
+    },
+    updated: function () {
+      var el = this.$el
+      el.scrollTop = el.scrollHeight - lastScrollHeight
+    },
+    methods: {
+      onScrollBarrageArea: function () {
+        var el = this.$el
+        if (el.scrollTop > 0) {
+          return
+        }
+
+        var firstChild = el.firstElementChild
+        var startId = firstChild.getAttribute('barrage-id')
+        var xmlhttp = new XMLHttpRequest()
+        xmlhttp.open('POST', 'load_barrages', true)
+        xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+        xmlhttp.onreadystatechange = function () {
+          if (xmlhttp.readyState === 4) {
+            if (xmlhttp.status === 200) {
+              var gettedBarrageStrs = JSON.parse(xmlhttp.responseText)
+              if (gettedBarrageStrs.length === 0) {
+                return
+              }
+
+              lastScrollHeight = el.scrollHeight
+              for (var i = 0; i < gettedBarrageStrs.length; ++i) {
+                var barrage = JSON.parse(gettedBarrageStrs[i])
+                barrageList.unshift(barrage)
+              }
+            }
+          }
+        }
+
+        xmlhttp.send('start_id=' + startId)
+      }
+    }
+  })
 }
 
-function insertBarrageElement(obj, root)
-{
-	var li = createBarrageElement(obj)
-	root.insertBefore(li, root.firstChild)
+function createUserBarrageListVM (barrageList, root) {
+  return new Vue({
+    el: root,
+    data: {
+      barrages: barrageList
+    },
+    methods: {
+      onScrollBarrageArea: function () {
+        var el = this.$el
+        if (el.scrollTop < (el.scrollHeight - el.clientHeight)) {
+          return
+        }
+        var usernameInput = document.getElementById('username')
+        var username = usernameInput.value
+        if (username === '') {
+          return
+        }
+
+        var lastChild = el.lastElementChild
+        var startId = lastChild.getAttribute('barrage-id')
+        var xmlhttp = new XMLHttpRequest()
+        xmlhttp.open('POST', 'search_user_barrages', true)
+        xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+        xmlhttp.onreadystatechange = function () {
+          if (xmlhttp.readyState === 4) {
+            if (xmlhttp.status === 200) {
+              if (usernameInput.value !== username) {
+                // abort
+                return
+              }
+
+              var barrages = JSON.parse(xmlhttp.responseText)
+              for (var i = 0; i < barrages.length; ++i) {
+                var barrgae = JSON.parse(barrages[i])
+                appendBarrageElement(barrageList, barrgae)
+              }
+            }
+          }
+        }
+
+        xmlhttp.send('username=' + username + '&start_id=' + startId)
+      }
+    }
+  })
 }
 
-function clearElements(root)
-{
-	var childs = root.childNodes; 
-	for(var i = childs.length - 1; i >= 0; i--) 
-	{
-		root.removeChild(childs[i]);
-	}
-
+function appendBarrageElement (barrages, barrage) {
+  // console.log('[danmu] appendBarrageElement: ', barrage)
+  barrages.push(barrage)
 }
 
-var barrageCountElem = document.getElementById("BarrageCount")
-function setBarrageCount(count) 
-{
-	barrageCountElem.innerHTML = count.toString().replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,');
+function startBarrageWebSocket () {
+  if ('WebSocket' in window) {
+    console.log('[danmu] WebSocket is supported!')
+
+    // Create WebSocket connection.
+    const socket = new WebSocket('wss://' + document.domain + '/ws_danmu');
+    // const socket = new WebSocket('ws://' + document.domain + ':8765')
+
+    var barrageList = []
+    var barrageArea = document.getElementById('BarrageArea')
+    createBarrageListVM(barrageList, barrageArea)
+
+    // Connection init
+    barrageStatistics.connectionStatus = '连接中...'
+
+    // Connection opened
+    socket.addEventListener('open', function () {
+      // socket.send('Hello Server!');
+      console.log('[danmu] Connected.')
+      barrageStatistics.connectionStatus = '已连接'
+    })
+
+    // Listen for messages
+    socket.addEventListener('message', function (event) {
+      var newBarrage = JSON.parse(event.data)
+      // console.log('[danmu] Message from server ', newBarrage);
+      barrageList.push(newBarrage)
+      barrageStatistics.count = newBarrage.id + 1
+    })
+
+    socket.addEventListener('close', function () {
+      // socket.send('Hello Server!');
+      console.log('[danmu] Disconnected.')
+      barrageStatistics.connectionStatus = '连接已断开'
+    })
+  } else {
+    // 浏览器不支持 WebSocket
+    console.log('[danmu] WebSocket is not supported!')
+  }
 }
 
+function searchUserBarrages () {
+  // 清空 barrageList
+  var barrageList = userBarrageList
+  barrageList.splice(0)
 
-function startBarrageWebSocket()
-{
-	if ("WebSocket" in window)
-	{
-		console.log("您的浏览器支持 WebSocket!");
-		
-	// Create WebSocket connection.
-	const socket = new WebSocket('wss://' + document.domain + '/ws_danmu');
-	// const socket = new WebSocket('ws://' + document.domain + ':8765');
+  var searchButtonOriginalClassName
+  var userBarrageArea = document.getElementById('BarrageArea-User')
 
-	var barrageArea = document.getElementById("BarrageArea");
-	var barrageConnectionStatus = document.getElementById("BarrageConnectionStatus");
-	var lastLi;
-	barrageConnectionStatus.innerHTML = "连接中..."
+  var xmlhttp = new XMLHttpRequest()
+  xmlhttp.open('POST', 'search_user_barrages', true)
+  xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+  xmlhttp.onreadystatechange = function () {
+    if (xmlhttp.readyState === 4) {
+      if (xmlhttp.status === 200) {
+        var barrages = JSON.parse(xmlhttp.responseText)
 
-	// Connection opened
-	socket.addEventListener('open', function (event) {
-			// socket.send('Hello Server!');
-			console.log("connected")
-			barrageConnectionStatus.innerHTML = "已连接"
-		});
+        userBarrageArea.style.display = 'block'
+        for (var i = 0; i < barrages.length; ++i) {
+          var barrage = JSON.parse(barrages[i])
+          appendBarrageElement(barrageList, barrage)
+        }
 
-	// Listen for messages
-	socket.addEventListener('message', function (event) {
-		var obj = JSON.parse(event.data);
-		// console.log('Message from server ', obj);
-		appendBarrageElement(obj, barrageArea, false)
-		setBarrageCount(obj.id + 1);
-	});
+        $('#BarrageArea-User').transition('pulse')
+      }
 
-	socket.addEventListener('close', function (event) {
-			// socket.send('Hello Server!');
-			console.log("disconnected")
-			barrageConnectionStatus.innerHTML = "连接已断开"
-		});
-	}
-	else
-	{
-		 // 浏览器不支持 WebSocket
-		 console.log("您的浏览器不支持 WebSocket!")
-	}
+      var searchButton = document.getElementById('search_button')
+      searchButton.className = searchButtonOriginalClassName
+    }
+  }
+
+  var errorMsgGroup = document.getElementById('search_error_message_group')
+  var usernameInput = document.getElementById('username')
+  var username = usernameInput.value
+  if (username !== '') {
+    errorMsgGroup.style.display = 'none'
+
+    var searchButton = document.getElementById('search_button')
+    searchButtonOriginalClassName = searchButton.className
+    searchButton.className += ' loading disabled'
+    xmlhttp.send('username=' + username)
+  } else {
+    errorMsgGroup.style.display = 'block'
+    var errorMsgLabel = document.getElementById('search_error_message')
+    errorMsgLabel.innerHTML = '请输入用户名或者选择下方弹幕列表中的用户名。'
+    $('#search_error_message_group').transition('pulse')
+  }
 }
 
-
-function search_user_barrages()
-{
-	var search_button_original_class_name
-
-	var xmlhttp = new XMLHttpRequest();
-	xmlhttp.open("POST", "search_user_barrages", true)
-	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
-	xmlhttp.onreadystatechange = function()
-	{
-		if (xmlhttp.readyState == 4)
-		{
-			if (xmlhttp.status == 200)
-			{
-				var barrgaes = JSON.parse(xmlhttp.responseText)
-				var userBarrageArea = document.getElementById("BarrageArea-User");
-				userBarrageArea.style.display = "block"
-				clearElements(userBarrageArea)
-				for (var i = 0; i < barrgaes.length; ++i) 
-				{
-					var barrgae = JSON.parse(barrgaes[i])
-					appendBarrageElement(barrgae, userBarrageArea, true)
-				}
-
-				$("#BarrageArea-User").transition('pulse');
-			}
-
-			var search_button = document.getElementById("search_button");
-			search_button.className = search_button_original_class_name;
-		}
-	}
-
-	var error_msg_group = document.getElementById("search_error_message_group")
-	var usernameInput = document.getElementById("username");
-	var username = usernameInput.value
-	if (username != "")
-	{
-		error_msg_group.style.display = "none";
-
-		var search_button = document.getElementById("search_button");
-		search_button_original_class_name = search_button.className;
-		search_button.className += " loading disabled";
-		xmlhttp.send("username="+username)
-	}
-	else
-	{
-		error_msg_group.style.display = "block";
-		var error_msg_label = document.getElementById("search_error_message")
-		error_msg_label.innerHTML = "请输入用户名或者选择下方弹幕列表中的用户名。";
-		$("#search_error_message_group").transition('pulse');
-	}
+function fillUserName (username) {
+  var usernameInput = document.getElementById('username')
+  usernameInput.value = username
 }
 
-function fillUserName(obj)
-{
-	var usernameInput = document.getElementById("username");
-	username.value = obj.title
+function registerComponents () {
+  Vue.component('barrage-list-item', {
+    props: ['barrage'],
+    computed: {
+      formattedDate: function () {
+        var date = new Date(parseInt(this.barrage.cst))
+        return dateFtt('yyyy-MM-dd hh:mm:ss', date)
+      },
+      medalLevelClass: function () {
+        return 'FansMedal level-' + this.barrage.bl
+      },
+      userLevelClass: function () {
+        return 'UserLevel UserLevel--' + this.barrage.level
+      },
+      barrageContentClass: function () {
+        var fontColorId = 6
+        var bl = this.barrage.bl
+        if (bl > 0) {
+          if (bl >= 6) {
+            var index = Math.floor((bl - 6) / 3) + 1
+            index = index > 6 ? 6 : index
+            fontColorId = fontColorArray[index]
+          }
+        }
+        return 'Barrage-content Barrage-content--color' + fontColorId
+      },
+      hasFansMedal: function () {
+        return this.barrage.bl > 0
+      }
+    },
+    methods: {
+      onClickUserName: function () {
+        fillUserName(this.barrage.nickname)
+      }
+    },
+    template: `
+      <li class="Barrage-listItem" :barrage-id="barrage.id">
+        <span class="Barrage-date Barrage-date--blue">{{formattedDate}}&nbsp;</span>
+        <a :class="medalLevelClass" v-if="hasFansMedal">
+          <span class="FansMedal-name">{{barrage.bnn}}</span>
+        </a>
+        <span>&nbsp</span>
+        <span :class="userLevelClass" :title="'用户等级：' + barrage.level"></span>
+        <span class="Barrage-nickName Barrage-nickName--blue" :title="barrage.nickname" @click="onClickUserName">{{barrage.nickname}}：</span>
+        <span :class="barrageContentClass">{{barrage.content}}</span>
+      </li>
+    `
+  })
+
+  Vue.component('barrage-search-button', {
+    methods: {
+      search_user_barrages: function () {
+        searchUserBarrages()
+      }
+    },
+    template: `
+      <button class="right attached blue large ui icon button" id="search_button" @click="search_user_barrages">
+        <i class="search icon"></i>
+      </button>
+    `
+  })
+
+  Vue.component('barrage-room-id', {
+    props: ['roomId'],
+    computed: {
+      url: function () {
+        return 'https://www.douyu.com/' + this.roomId
+      }
+    },
+    template: '<span class="BarrageSpan">房间号：<a :href="url" target="_blank">{{roomId}}</a></span>'
+  })
+
+  Vue.component('barrage-connection-status', {
+    props: ['barrageStatistics'],
+    computed: {
+      connectionStatus: function () {
+        return this.barrageStatistics.connectionStatus
+      }
+    },
+    template: '<span class="BarrageSpan">弹幕服务器：{{connectionStatus}}</span>'
+  })
+
+  Vue.component('barrage-counter', {
+    props: ['barrageStatistics'],
+    computed: {
+      formattedCount: function () {
+        var count = this.barrageStatistics.count
+        if (count === 0) {
+          return '-'
+        }
+        return count.toString().replace(/(\d{1,3})(?=(\d{3})+$)/g, '$1,')
+      }
+    },
+    template: '<span class="BarrageSpan">弹幕数量：{{formattedCount}}</span>'
+  })
 }
 
-function onScrollBarrageArea(obj)
-{
-	if (obj.scrollTop == 0)
-	{
-		var firstChild = obj.firstElementChild
-		var start_id = firstChild.getAttribute("Barrage-id")
-		var xmlhttp = new XMLHttpRequest();
-		xmlhttp.open("POST", "load_barrages", true)
-		xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
-		xmlhttp.onreadystatechange = function()
-		{
-			if (xmlhttp.readyState == 4)
-			{
-				if (xmlhttp.status == 200)
-				{
-					var barrgaes = JSON.parse(xmlhttp.responseText)
-					var barrageArea = document.getElementById("BarrageArea");
-					var lastScrollHeight = obj.scrollHeight
-					for (var i = 0; i < barrgaes.length; ++i) 
-					{
-						var barrgae = JSON.parse(barrgaes[i])
-						insertBarrageElement(barrgae, barrageArea)
-					}
-					obj.scrollTop = obj.scrollHeight - lastScrollHeight
-				}
-			}
-		}
+function initComponents () {
+  // barrage-room-id
+  new Vue({
+    el: 'barrage-room-id'
+  })
 
-		xmlhttp.send("start_id="+start_id)
-	}
-	
+  // barrage-connection-status
+  new Vue({
+    el: 'barrage-connection-status',
+    data: {
+      barrageStatistics: barrageStatistics
+    }
+  })
+
+  // barrage-counter
+  new Vue({
+    el: 'barrage-counter',
+    data: {
+      barrageStatistics: barrageStatistics
+    }
+  })
+
+  // barrage-search-button
+  new Vue({
+    el: 'barrage-search-button'
+  })
+
+  var userBarrageArea = document.getElementById('BarrageArea-User')
+  createUserBarrageListVM(userBarrageList, userBarrageArea)
 }
 
-function onScrollUserBarrageArea(obj)
-{
-	if (obj.scrollTop == (obj.scrollHeight - obj.clientHeight))
-	{
-		var usernameInput = document.getElementById("username");
-		var username = usernameInput.value
-		if (username == "")
-		{
-			return
-		}
-
-		var lastChild = obj.lastElementChild
-		var start_id = lastChild.getAttribute("Barrage-id")
-		var xmlhttp = new XMLHttpRequest();
-		xmlhttp.open("POST", "search_user_barrages", true)
-		xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
-		xmlhttp.onreadystatechange = function()
-		{
-			if (xmlhttp.readyState == 4)
-			{
-				if (xmlhttp.status == 200)
-				{
-					if (usernameInput.value != username)
-					{
-						// abort
-						return
-					}
-
-					var barrgaes = JSON.parse(xmlhttp.responseText)
-					var barrageArea = document.getElementById("BarrageArea-User");
-					var lastScrollHeight = obj.scrollHeight
-					for (var i = 0; i < barrgaes.length; ++i) 
-					{
-						var barrgae = JSON.parse(barrgaes[i])
-						appendBarrageElement(barrgae, barrageArea, true)
-					}
-					// obj.scrollTop = obj.scrollHeight - lastScrollHeight
-				}
-			}
-		}
-
-		xmlhttp.send("username="+username+"&start_id="+start_id)
-	}
+function startApp () {
+  registerComponents()
+  initComponents()
+  startBarrageWebSocket()
 }
 
-startBarrageWebSocket()
+startApp()

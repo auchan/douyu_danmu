@@ -1,2 +1,5 @@
 *.db
 barrage_*.txt
+debug_barrage_*.txt
+.vscode
+node_modules
