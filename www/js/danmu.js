@@ -3,7 +3,8 @@
 /****************************************************************************/
 // Global variables
 /****************************************************************************/
-var fontColorArray = [6, 1, 2, 5, 3, 0, 4]
+const fontColorArray = [6, 1, 2, 5, 3, 0, 4]
+const PREFER_BARRAGE_NUM = 40
 var userBarrageList = []
 var barrageStatistics = { count: 0, connectionStatus: '未连接' }
 /****************************************************************************/
@@ -130,6 +131,10 @@ function appendBarrageElement (barrages, barrage) {
   barrages.push(barrage)
 }
 
+function isScrollAtBottom (el) {
+  return el.scrollTop === (el.scrollHeight - el.clientHeight)
+}
+
 function startBarrageWebSocket () {
   if ('WebSocket' in window) {
     console.log('[danmu] WebSocket is supported!')
@@ -140,7 +145,7 @@ function startBarrageWebSocket () {
 
     var barrageList = []
     var barrageArea = document.getElementById('BarrageArea')
-    createBarrageListVM(barrageList, barrageArea)
+    var vm = createBarrageListVM(barrageList, barrageArea)
 
     // Connection init
     barrageStatistics.connectionStatus = '连接中...'
@@ -157,6 +162,13 @@ function startBarrageWebSocket () {
       var newBarrage = JSON.parse(event.data)
       // console.log('[danmu] Message from server ', newBarrage);
       barrageList.push(newBarrage)
+      var isAtBottom = isScrollAtBottom(vm.$el)
+      if (isAtBottom) {
+        if (barrageList.length > PREFER_BARRAGE_NUM) {
+          var removeCount = barrageList.length - PREFER_BARRAGE_NUM
+          barrageList.splice(0, removeCount)
+        }
+      }
       barrageStatistics.count = newBarrage.id + 1
     })
 
