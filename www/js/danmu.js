@@ -26,7 +26,8 @@ function dateFtt (fmt, date) {
 }
 
 function createBarrageListVM (barrageList, root) {
-  var lastScrollHeight = 0
+  var lastScrollHeight = root.scrollHeight
+  var isInsert = false
   return new Vue({
     el: root,
     data: {
@@ -34,7 +35,14 @@ function createBarrageListVM (barrageList, root) {
     },
     updated: function () {
       var el = this.$el
-      el.scrollTop = el.scrollHeight - lastScrollHeight
+      var lastScrollBottom = lastScrollHeight - el.clientHeight
+      if (isInsert) {
+        el.scrollTop = el.scrollHeight - lastScrollHeight
+      } else if (el.scrollTop === lastScrollBottom) {
+        el.scrollTop = el.scrollHeight - el.clientHeight
+      }
+      lastScrollHeight = el.scrollHeight
+      isInsert = false
     },
     methods: {
       onScrollBarrageArea: function () {
@@ -56,7 +64,7 @@ function createBarrageListVM (barrageList, root) {
                 return
               }
 
-              lastScrollHeight = el.scrollHeight
+              isInsert = true
               for (var i = 0; i < gettedBarrageStrs.length; ++i) {
                 var barrage = JSON.parse(gettedBarrageStrs[i])
                 barrageList.unshift(barrage)
