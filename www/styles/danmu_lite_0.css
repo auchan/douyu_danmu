@@ -868,11 +868,88 @@ li {
 }
 
 .BarrageContentWrap {
-    height: 100%;
+    width: 100%;
+    bottom: 0px;
 }
 .BarrageSpan {
     margin-left: 2px;
     margin-right: 2px;
+}
+
+.scene-background {
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    position: fixed;
+    z-index: -1;
+}
+
+footer {
+    display: block;
+}
+
+.BarrageFooter {
+    overflow: hidden;
+    font-weight: 400;
+    z-index: 11;
+    width: 100%;
+    position: relative;
+    border: 0;
+    padding: 0;
+    text-align: center;
+    margin-top: 8px;
+}
+
+.April-Fools-Day {
+    display: inline-block;
+    font-size: 20px;
+
+    animation:ani-hh 3s linear 1s infinite;
+    -moz-animation:ani-hh 3s linear 1s infinite; /* Firefox */
+    -webkit-animation:ani-hh 3s linear 1s infinite; /* Safari and Chrome */
+    -o-animation:ani-hh 3s linear 1s infinite; /* Opera */
+}
+
+@keyframes ani-hh
+{
+0% {transform: rotateY(0deg);}
+25% {transform: rotateY(90deg);}
+50% {transform: rotateY(180deg);}
+75% {transform: rotateY(270deg);}
+100% {transform: rotateY(360deg);}
+}
+
+@-moz-keyframes ani-hh /* Firefox */
+{
+0% {-moz-transform: rotateY(0deg);}
+25% {-moz-transform: rotateY(90deg);}
+50% {-moz-transform: rotateY(180deg);}
+75% {-moz-transform: rotateY(270deg);}
+100% {-moz-transform: rotateY(360deg);}
+}
+
+@-webkit-keyframes ani-hh /* Safari and Chrome */
+{
+0% {-webkit-transform: rotateY(0deg);}
+25% {-webkit-transform: rotateY(90deg);}
+50% {-webkit-transform: rotateY(180deg);}
+75% {-webkit-transform: rotateY(270deg);}
+100% {-webkit-transform: rotateY(360deg);}
+}
+
+@-o-keyframes ani-hh /* Opera */
+{
+0% {-o-transform: rotateY(0deg);}
+25% {-o-tranosform: rotateY(90deg);}
+50% {-o-transform: rotateY(180deg);}
+75% {-o-transform: rotateY(270deg);}
+100% {-o-transform: rotateY(360deg);}
+}
+
+.mourning {
+    filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+    -webkit-filter: grayscale(100%);
 }
 
 /*@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600,700);*/

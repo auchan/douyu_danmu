@@ -7,6 +7,9 @@ const fontColorArray = [6, 1, 2, 5, 3, 0, 4]
 const PREFER_BARRAGE_NUM = 40
 var userBarrageList = []
 var barrageStatistics = { count: 0, connectionStatus: '未连接' }
+var renderer, camera
+// festival
+var gIsAprialFoolsDay
 /****************************************************************************/
 
 function dateFtt (fmt, date) {
@@ -24,6 +27,18 @@ function dateFtt (fmt, date) {
     if (new RegExp('(' + k + ')').test(fmt)) { fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length))) }
   }
   return fmt
+}
+
+function isAprialFoolsDay () {
+  if (gIsAprialFoolsDay === undefined) {
+    var date = new Date()
+    if (date.getMonth() + 1 === 4 && date.getDate() === 1) {
+      gIsAprialFoolsDay = true
+    } else {
+      gIsAprialFoolsDay = false
+    }
+  }
+  return gIsAprialFoolsDay
 }
 
 function createBarrageListVM (barrageList, root) {
@@ -260,7 +275,11 @@ function registerComponents () {
             fontColorId = fontColorArray[index]
           }
         }
-        return 'Barrage-content Barrage-content--color' + fontColorId
+        var extraClass = ''
+        if (isAprialFoolsDay() && this.barrage.content.indexOf('愚人节') > -1) {
+          extraClass = 'April-Fools-Day'
+        }
+        return 'Barrage-content Barrage-content--color' + fontColorId + ' ' + extraClass
       },
       hasFansMedal: function () {
         return this.barrage.bl > 0
@@ -331,6 +350,15 @@ function registerComponents () {
     },
     template: '<span class="BarrageSpan">弹幕数量：{{formattedCount}}</span>'
   })
+
+  Vue.component('barrage-footer', {
+    computed: {
+      accessUrl: function () {
+        return 'https://github.com/auchan/douyu_danmu'
+      }
+    },
+    template: '<footer class="BarrageFooter">©2019-2020 &nbsp;<a :href="accessUrl">auchan</a></footer>'
+  })
 }
 
 function initComponents () {
@@ -360,14 +388,108 @@ function initComponents () {
     el: 'barrage-search-button'
   })
 
+  // barrage-footer
+  new Vue({
+    el: 'footer'
+  })
+
   var userBarrageArea = document.getElementById('BarrageArea-User')
   createUserBarrageListVM(userBarrageList, userBarrageArea)
+}
+
+function createSkybox () {
+  var container = document.getElementById('scene-container')
+
+  camera = new THREE.PerspectiveCamera(
+    90, window.innerWidth / window.innerHeight, 1, 2000)
+  camera.position.z = 30
+  // scene
+  scene = new THREE.Scene()
+  scene.background = new THREE.Color(0xffffff)
+
+  var ambient = new THREE.AmbientLight(0x666666)
+  scene.add(ambient)
+  var directionalLight = new THREE.DirectionalLight(0x887766)
+  directionalLight.position.set(-1, 1, 1).normalize()
+  scene.add(directionalLight)
+
+  // sky box
+  var skyBoxName = 'starfield'
+  new THREE.CubeTextureLoader()
+    .setPath('../images/skyboxes/' + skyBoxName + '/')
+    .load([
+      'px.png',
+      'nx.png',
+      'py.png',
+      'ny.png',
+      'pz.png',
+      'nz.png'
+    ], function (texture) {
+      scene.background = texture
+    })
+
+  // axes
+  // The X axis is red. The Y axis is green. The Z axis is blue.
+  var axesHelper = new THREE.AxesHelper(5)
+  scene.add(axesHelper)
+
+  renderer = new THREE.WebGLRenderer({ antialias: true })
+  renderer.setPixelRatio(window.devicePixelRatio)
+  renderer.setSize(window.innerWidth, window.innerHeight)
+  container.appendChild(renderer.domElement)
+
+  // control
+  controls = new THREE.OrbitControls(camera, renderer.domElement)
+  controls.autoRotate = true
+  controls.autoRotateSpeed = 0.05
+
+  // window resize
+  window.addEventListener('resize', onWindowResize, false)
+}
+
+function onWindowResize () {
+  camera.aspect = window.innerWidth / window.innerHeight
+  camera.updateProjectionMatrix()
+  renderer.setSize(window.innerWidth, window.innerHeight)
+}
+
+//
+function animate () {
+  requestAnimationFrame(animate)
+  render()
+  controls.update()
+}
+
+function render () {
+  renderer.render(scene, camera)
+}
+
+function postProcess () {
+  function onMourningDay () {
+    console.log('[danmu] Today is mourning day. T_T')
+    $('html').addClass('mourning')
+  }
+
+  var curDate = new Date()
+  var mourningDate = new Date(curDate.getFullYear(), 4 - 1, 4)
+  var mourningLeftMS = mourningDate - curDate
+  if (mourningLeftMS > 0) {
+    console.log('[danmu] mourning day countdown: ' + mourningLeftMS / 1000)
+    setTimeout(onMourningDay, mourningLeftMS)
+  } else if (mourningLeftMS / 1000 > -86400) {
+    onMourningDay()
+  }
 }
 
 function startApp () {
   registerComponents()
   initComponents()
   startBarrageWebSocket()
+
+  createSkybox()
+  animate()
+
+  postProcess()
 }
 
 startApp()

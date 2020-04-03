@@ -39,7 +39,7 @@ button {
   padding: 10px;
   box-sizing: border-box;
   text-align: center;
-  z-index: 1; /* TODO Solve this in HTML */
+  z-index: -1; /* TODO Solve this in HTML */
 }
 
 .dg.ac {
